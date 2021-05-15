@@ -1,0 +1,90 @@
+\babel@toc {english}{}
+\contentsline {chapter}{ABSTRACT}{i}{chapter*.1}%
+\contentsline {paragraph}{}{i}{section*.2}%
+\contentsline {chapter}{\numberline {1}THEORY}{iv}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Introduction}{iv}{section.1.1}%
+\contentsline {paragraph}{}{iv}{section*.4}%
+\contentsline {paragraph}{}{iv}{section*.5}%
+\contentsline {section}{\numberline {1.2}Neural Theorem Prover}{iv}{section.1.2}%
+\contentsline {paragraph}{}{iv}{section*.6}%
+\contentsline {subsection}{\numberline {1.2.1}Unification module}{v}{subsection.1.2.1}%
+\contentsline {paragraph}{}{v}{section*.7}%
+\contentsline {paragraph}{}{v}{section*.8}%
+\contentsline {subsection}{\numberline {1.2.2}OR module}{v}{subsection.1.2.2}%
+\contentsline {paragraph}{}{v}{section*.9}%
+\contentsline {subsection}{\numberline {1.2.3}AND module}{vi}{subsection.1.2.3}%
+\contentsline {paragraph}{}{vi}{section*.10}%
+\contentsline {paragraph}{}{vi}{section*.11}%
+\contentsline {subsection}{\numberline {1.2.4}Bottleneck}{vi}{subsection.1.2.4}%
+\contentsline {paragraph}{}{vi}{section*.12}%
+\contentsline {section}{\numberline {1.3}Greedy Neural Theorem Prover}{vii}{section.1.3}%
+\contentsline {paragraph}{}{vii}{section*.14}%
+\contentsline {subsection}{\numberline {1.3.1}Fact selection}{vii}{subsection.1.3.1}%
+\contentsline {paragraph}{}{vii}{section*.15}%
+\contentsline {paragraph}{}{viii}{section*.16}%
+\contentsline {subsection}{\numberline {1.3.2}Rule selection}{viii}{subsection.1.3.2}%
+\contentsline {paragraph}{}{viii}{section*.17}%
+\contentsline {subsection}{\numberline {1.3.3}Bottleneck}{viii}{subsection.1.3.3}%
+\contentsline {section}{\numberline {1.4}Conditional Theorem Prover}{ix}{section.1.4}%
+\contentsline {paragraph}{}{ix}{section*.18}%
+\contentsline {paragraph}{}{ix}{section*.19}%
+\contentsline {subsection}{\numberline {1.4.1}Goal Reformulators}{ix}{subsection.1.4.1}%
+\contentsline {subsubsection}{Linear Reformulator}{ix}{section*.20}%
+\contentsline {paragraph}{}{ix}{section*.21}%
+\contentsline {subsubsection}{Attentive Reformulator}{ix}{section*.22}%
+\contentsline {paragraph}{}{ix}{section*.23}%
+\contentsline {subsubsection}{Memory-Based Reformulator}{x}{section*.24}%
+\contentsline {subsection}{\numberline {1.4.2}Bottleneck}{x}{subsection.1.4.2}%
+\contentsline {paragraph}{}{x}{section*.25}%
+\contentsline {chapter}{\numberline {2}EXPERIMENTS}{xi}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Introduction}{xi}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Setup}{xi}{subsection.2.1.1}%
+\contentsline {paragraph}{}{xi}{section*.26}%
+\contentsline {paragraph}{}{xi}{section*.27}%
+\contentsline {subsection}{\numberline {2.1.2}Datasets}{xii}{subsection.2.1.2}%
+\contentsline {paragraph}{}{xii}{section*.28}%
+\contentsline {paragraph}{}{xii}{section*.29}%
+\contentsline {paragraph}{}{xii}{section*.30}%
+\contentsline {subsection}{\numberline {2.1.3}Versioning, Dependency Issues}{xiii}{subsection.2.1.3}%
+\contentsline {paragraph}{}{xiii}{section*.31}%
+\contentsline {subsection}{\numberline {2.1.4}Sampling Dataset}{xiii}{subsection.2.1.4}%
+\contentsline {paragraph}{}{xiii}{section*.32}%
+\contentsline {section}{\numberline {2.2}Replicating the Results}{xiv}{section.2.2}%
+\contentsline {paragraph}{}{xiv}{section*.33}%
+\contentsline {paragraph}{}{xiv}{section*.34}%
+\contentsline {paragraph}{Metrics:}{xiv}{section*.35}%
+\contentsline {subsection}{\numberline {2.2.1}Analysis}{xiv}{subsection.2.2.1}%
+\contentsline {paragraph}{}{xiv}{section*.36}%
+\contentsline {section}{\numberline {2.3}Memory Utilization Analysis}{xv}{section.2.3}%
+\contentsline {paragraph}{}{xv}{section*.37}%
+\contentsline {paragraph}{Datasets:}{xv}{section*.38}%
+\contentsline {paragraph}{Hyper-parametres:}{xv}{section*.39}%
+\contentsline {paragraph}{Method: }{xv}{section*.40}%
+\contentsline {paragraph}{Metrics:}{xv}{section*.41}%
+\contentsline {subsection}{\numberline {2.3.1}Results}{xv}{subsection.2.3.1}%
+\contentsline {paragraph}{}{xvi}{table.2.4}%
+\contentsline {subsection}{\numberline {2.3.2}Analysis}{xvi}{subsection.2.3.2}%
+\contentsline {paragraph}{}{xvi}{section*.43}%
+\contentsline {paragraph}{}{xvi}{section*.45}%
+\contentsline {paragraph}{}{xvii}{section*.46}%
+\contentsline {section}{\numberline {2.4}Execution Time Analysis}{xvii}{section.2.4}%
+\contentsline {paragraph}{}{xvii}{section*.47}%
+\contentsline {paragraph}{Datasets:}{xvii}{section*.48}%
+\contentsline {paragraph}{Hyper-parametres:}{xvii}{section*.49}%
+\contentsline {paragraph}{Method: }{xvii}{section*.50}%
+\contentsline {paragraph}{Metrics:}{xvii}{section*.51}%
+\contentsline {subsection}{\numberline {2.4.1}Results}{xvii}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Analysis}{xviii}{subsection.2.4.2}%
+\contentsline {paragraph}{}{xviii}{section*.52}%
+\contentsline {paragraph}{}{xix}{section*.54}%
+\contentsline {section}{\numberline {2.5}Performance Analysis}{xix}{section.2.5}%
+\contentsline {paragraph}{}{xix}{section*.56}%
+\contentsline {paragraph}{Datasets:}{xix}{section*.57}%
+\contentsline {paragraph}{Hyper-parametres:}{xix}{section*.58}%
+\contentsline {paragraph}{Method: }{xx}{section*.59}%
+\contentsline {paragraph}{Metrics:}{xx}{section*.60}%
+\contentsline {subsection}{\numberline {2.5.1}Results}{xx}{subsection.2.5.1}%
+\contentsline {paragraph}{}{xx}{section*.61}%
+\contentsline {subsection}{\numberline {2.5.2}Analysis}{xx}{subsection.2.5.2}%
+\contentsline {paragraph}{}{xx}{section*.62}%
+\contentsline {chapter}{\numberline {3}References}{xxii}{chapter.3}%
