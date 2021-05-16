@@ -576,6 +576,123 @@ We can observe from the plot \ref{fig:loss} loss after the first epoch for CTP i
   \end{center}
 \end{figure}
 
+
+\chapter{Evaluation: Experimenting with FB15k-237 (freebase) dataset}
+\section{Evaluation metrics}
+\paragraph{MRR:}
+Now that we figured out the limitations of the theorem prover models, we deduced that datasets like Freebase and WordNet can be trained within our computational resources. Our next goal is to get the actual metrics of the model on these datasets and compare it to other standard link prediction models. With the same set-up as the above experiments, we trained our model on Freebase and then ran the evaluation script the authors provided on the trained parameters. The metrics used for these models is Mean Reciprocal Rank (MRR).
+
+\paragraph{Analysis on evaluation time:}
+The evaluation metrics are calculated by dividing the triples into batches and then find ranks of the triples by batch and aggregate the MRR over all the batches. But the time taken per batch is observed to be too high for us to be able to run the evaluation to completion. According to our estimation, it will take about \~70 days for all the batches to be evaluated. Note that this experiment is ran on CTP.
+
+\subsection{Bottlenecks}
+\paragraph{Mean Reciprocal Rank:}
+First, to understand the bottleneck of the evaluation script, let us look at the evaluation metric MRR and how it is calculated. For each triple (s, p, o), we have to rank all the entities in our KB over the scores of (x, p, o) in our model and find the rank of our subject 's' and similarly rank our object 'o' over the scores of (s, p, x). And the we add the reciprocal ranks and average it out to find the MRR. 
+
+\paragraph{Bottleneck:}
+We can see that this method needs us to call the 'score' function of CTP number of entities times for each triple. This is implemented as the 'forward' function in the models. We identified this as the bottleneck of the evaluation script and also confirmed it using profilers and checking the runtimes of all the functions that are called.
+
+\subsection{Workaround}
+\paragraph{}
+We can see that it is really inefficient to calculate scores over all the entities and ranking them. So we need to find a way to reduce the scope to most probable 'k' entities instead of all the entities. That is, given a subject, predicate pair (s, p), we need to come up with a way to extract k entities that are true as the object for this particular subject, predicate pair and vice versa for predicate, object pair.
+
+\paragraph{Other Link prediction models:}
+Our idea is that if we can estimate the object embedding from subject, predicate pair, we can perform a KNN search on our entity embedding space and extract the nearest k entities to our estimate. But there is no way to estimate the third element in the triple given a pair. We decided to look for other standard link prediction models in which such an estimation possible. Then we planned to incorporate those parameters of the model into our evaluation script and reduce the scope of the entities for our evaluation.
+
+\subsubsection{TransE}
+TransE is a standard link prediction model. It models relationships by interpreting them as translations operating on the low-dimensional embeddings of the entities. Relationships are represented as translations in the embedding space: if \((s,p,o)\) holds, the embedding of the tail entity \(o\) should be close to the embedding of the head entity \(s\) plus some vector that depends on the relationship \(p\).
+\[e_{s} + e_{p} = e_{o}\]
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|r|r|}
+		\hline
+		\multicolumn{1}{|l|}{\textbf{Type}} & \multicolumn{1}{l|}{\textbf{Metric}} \\ \hline
+		MRR                                    & 0.209815                                      \\ \hline
+		Hits@1                                    & 0.154256                                   \\ \hline
+		Hits@3                                    & 0.224470                                    \\ \hline
+		Hits@5                                    & 0.260750                                     \\ \hline
+		Hits@10                                    & 0.314302                                    \\ \hline
+	\end{tabular}
+	\caption{Our TransE implementation metrics over FreeBase. }
+	\label{tab:transE_MRR}
+\end{table}
+
+\paragraph{}
+We implemented the TransE model in the same code base as the CTP and GNTP models and tested it on freebase dataset. We observed that we got similar results as the standard implementation of TransE. So we decided that our implementation is good enough to use for the evaluation of CTP. \\
+The following changes are to be made to include TransE in the evaluation:
+\begin{enumerate}
+\item We need to load the pre-trained TransE parameters and pass it to evaluate function.
+\item For every triple, we can extract top 'k' entities from TransE embedding space that are closest to TransE estimate for both subject and object canditates.
+\item instead of using the 'forward' function, we use 'score function' to calculate scores of all the 'k' entities.
+\item Use these ranks to calculate MRR.
+\end{enumerate}
+
+
+\subsection{Results}
+\paragraph{}
+As we expected, reducing the scope of entities to rank over heavily improved the time efficiency of the evaluation. The time taken for evaluation is about 12 hours for the test dataset of Freebase.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|r|r|r|}
+		\hline
+		\multicolumn{1}{|l|}{\textbf{Type}} & \multicolumn{1}{l|}{\textbf{k=10}} & \multicolumn{1}{l|}{\textbf{k=100}} \\ \hline
+		MRR                                    & 0.563997      	&0                                \\ \hline
+		Hits@1                                    & 0.460471		&0                                   \\ \hline
+		Hits@3                                    & 0.565230		&0                                    \\ \hline
+		Hits@5                                    & 0.641405		&0                                     \\ \hline
+		Hits@10                                    & 0.884442	&0                                    \\ \hline
+	\end{tabular}
+	\caption{Metrics of CTP using TransE parameters over FreeBase. }
+	\label{tab:transE_MRR}
+\end{table}
+
+\subsection{Analysis}
+
+\paragraph{}
+One important thing to note is, the rank we get by extracting top k entities and the rank we get by the scores of all the entities can be vastly different. It also depends on how well the TransE and CTP performs. The better performances of both the models, the closer the actual rank is to the rank we calculate by extracting the top k entities. 
+
+\paragraph{}
+For lower \(k\), the metrics will always be higher. Because as \(k\) decreases, the worst rank, that is \(k+1\), our entity can have decreases. The same can be inferred through our results. So it is preferable for \(k\) to be higher as that will generate better metrics, that is closer to the actual metrics without the TransE extraction heuristic. But higher \(k\) requires more computational resources both in terms of memory and time. So there should be a trade off between computational capabilities and accuracy of the metrics.
+
+\chapter{Code changes by author}
+\section{Changes}
+\paragraph{}
+After being able to generate the metrics for the data, we decided to move on to one of the ideas we had previously to reduce the CTP bottleneck. That is, to introduce a KNN like search at the terminal step of CTP, so that it needs to calculate the scores of top k closest facts instead of all the facts in KB. We decided that this step will make the model much more efficient. As we were looking into this, we discovered that the authors made a new commit a month ago in which they made a few changes.
+
+\paragraph{}
+The changes include the KNN type fact selection, just like GNTP, for the CTP model. The new CTP builds an index on the facts and selects the best facts at the terminal node of CTP. This change should increase the efficiency by a lot. Other changes include a lot of streamlining the code and removing the unnecessary files.
+
+\section{Results of updated model}
+\subsection{Time and Memory usage}
+\paragraph{Training}
+The run time for training the model reduced drastically after the KNN implementation of extracting best facts. For 20 epochs, the old implementation took about \~2 days to train. While the new model takes about 3 hours to train the same. Memory usage is similar to the old model and well within our computational capabilities.
+
+\paragraph{Evaluation:}
+However, for evaluating the test dataset, the new implementation still takes around 5 days to complete. While it is much better than the time taken for evaluation of the old model, it is still not desirably fast enough. So we decided to use our trained TransE parameters to extract the top k candidate entities to rank over. Since the 'score' function is much faster in the new model, evaluating TransE is much faster and the eva;uation only takes about \~15 minutes to complete.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|r|r|r|}
+		\hline
+		\multicolumn{1}{|l|}{\textbf{Type}} & \multicolumn{1}{l|}{\textbf{k=10}} & \multicolumn{1}{l|}{\textbf{k=100}} \\ \hline
+		MRR                                    & 0.563997      	&0                                \\ \hline
+		Hits@1                                    & 0.460471		&0                                   \\ \hline
+		Hits@3                                    & 0.565230		&0                                    \\ \hline
+		Hits@5                                    & 0.641405		&0                                     \\ \hline
+		Hits@10                                    & 0.884442	&0                                    \\ \hline
+	\end{tabular}
+	\caption{Metrics of updated CTP using TransE parameters over FreeBase. }
+	\label{tab:transE_MRR}
+\end{table}
+
+\section{Analysis}
+
+
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bibliography.
 
