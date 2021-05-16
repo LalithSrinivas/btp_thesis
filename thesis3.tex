@@ -246,6 +246,16 @@ where $f_i: \mathbb{R}^k \rightarrow \mathbb{R}^k$ is a differentiable function 
 The bottleneck with respect to time and memory in this model comes from the step where unification scores are calculated with every fact present in our Knowledge Base (KB) at the terminal node step. This effect is particularly visible in larger datasets. A similar approach of GNTP can be used for selecting facts while still adopting the select structure to generate rules can be used to overcome this bottleneck, though we still need to pursue this idea. 
 
 
+\section{TransE}
+\paragraph{}
+Multi-relational data refers to directed graphs whose nodes correspond to entities and edges of the form (head, label, tail) (denoted \((h, l, t)\)), each of which indicates that there exists a relationship of name label between the entities head and tail. Models of multi-relational data play a pivotal role in many areas.
+
+\paragraph{}
+TransE is an energy-based model for learning low-dimensional embeddings of entities. In TransE, relationships are represented as translations in the embedding space: if \((h, l, t)\) holds, then the embedding of the tail entity \(t\) should be close to the embedding of the head entity \(h\) plus some vector that depends on the relationship \(l\). This approach relies on a reduced set of parameters as it learns only one low-dimensional vector for each entity and each relationship.
+
+\paragraph{Training:}
+Given a training set \(S\) of triplets \((h, l, t)\) composed of two entities \(h, t \in E\) (the set of entities) and a relationship \(l \in L\) (the set of relationships), our model learns vector embeddings of the entities and the relationships. The embeddings take values in \(R^{k}\) (\(k\) is a model hyperparameter) and are denoted with the same letters, in boldface characters. The basic idea behind our model is that the functional relation induced by the l-labeled edges corresponds to a translation of the embeddings, i.e. we want that \(h + l \approx t\) when \((h, l, t)\) holds (\(t\) should be a nearest neighbor of \(h + l\)), while \(h + l\) should be far away from \(t\) otherwise. Following an energy-based framework, the energy of a triplet is equal to \(d(h + l, t)\) for some dissimilarity measure \(d\), which we take to be either the \(L1\) or the \(L2\) -norm.
+
 
 % Experiments.
 
@@ -590,6 +600,16 @@ The evaluation metrics are calculated by dividing the triples into batches and t
 \paragraph{Mean Reciprocal Rank:}
 First, to understand the bottleneck of the evaluation script, let us look at the evaluation metric MRR and how it is calculated. For each triple (s, p, o), we have to rank all the entities in our KB over the scores of (x, p, o) in our model and find the rank of our subject 's' and similarly rank our object 'o' over the scores of (s, p, x). And the we add the reciprocal ranks and average it out to find the MRR. 
 
+\[MRR = 1/|Q| * \Sigma_{i=1}^{|Q|} 1/rank_{i}\]
+\\
+where \(rank_{i}\) refers to the rank position of the first relevant entity for the i-th triple.
+
+
+We use a slightly modified version since there are two ranks, that of subject and that of object, to calculate the MRR.
+
+\[MRR = 1/(2*|Q|) * \Sigma_{i=1}^{|Q|} (1/rank_{s_{i}} + 1/rank_{o_{i}})\]
+
+
 \paragraph{Bottleneck:}
 We can see that this method needs us to call the 'score' function of CTP number of entities times for each triple. This is implemented as the 'forward' function in the models. We identified this as the bottleneck of the evaluation script and also confirmed it using profilers and checking the runtimes of all the functions that are called.
 
@@ -606,14 +626,14 @@ TransE is a standard link prediction model. It models relationships by interpret
 
 \begin{table}[H]
 	\centering
-	\begin{tabular}{|r|r|}
+	\begin{tabular}{|r|r|r|}
 		\hline
-		\multicolumn{1}{|l|}{\textbf{Type}} & \multicolumn{1}{l|}{\textbf{Metric}} \\ \hline
-		MRR                                    & 0.209815                                      \\ \hline
-		Hits@1                                    & 0.154256                                   \\ \hline
-		Hits@3                                    & 0.224470                                    \\ \hline
-		Hits@5                                    & 0.260750                                     \\ \hline
-		Hits@10                                    & 0.314302                                    \\ \hline
+		\multicolumn{1}{|l|}{\textbf{Type}} & \multicolumn{1}{l|}{\textbf{Metrics of our implementation}}  & \multicolumn{1}{l|}{\textbf{Metrics of standard TransE}} \\ \hline
+		MRR                                    & 0.209815 &		-                                     \\ \hline
+		Hits@1                                    & 0.154256           & -                       \\ \hline
+		Hits@3                                    & 0.224470                & -                    \\ \hline
+		Hits@5                                    & 0.260750                 & -                   \\ \hline
+		Hits@10                                    & 0.314302                & 0.349                    \\ \hline
 	\end{tabular}
 	\caption{Our TransE implementation metrics over FreeBase. }
 	\label{tab:transE_MRR}
@@ -636,14 +656,14 @@ As we expected, reducing the scope of entities to rank over heavily improved the
 
 \begin{table}[H]
 	\centering
-	\begin{tabular}{|r|r|r|}
+	\begin{tabular}{|r|r|}
 		\hline
-		\multicolumn{1}{|l|}{\textbf{Type}} & \multicolumn{1}{l|}{\textbf{k=10}} & \multicolumn{1}{l|}{\textbf{k=100}} \\ \hline
-		MRR                                    & 0.563997      	&0                                \\ \hline
-		Hits@1                                    & 0.460471		&0                                   \\ \hline
-		Hits@3                                    & 0.565230		&0                                    \\ \hline
-		Hits@5                                    & 0.641405		&0                                     \\ \hline
-		Hits@10                                    & 0.884442	&0                                    \\ \hline
+		\multicolumn{1}{|l|}{\textbf{Type}} & \multicolumn{1}{l|}{\textbf{k=10}}  \\ \hline
+		MRR                                    & 0.563997      	                                \\ \hline
+		Hits@1                                    & 0.460471		                                   \\ \hline
+		Hits@3                                    & 0.565230		                                    \\ \hline
+		Hits@5                                    & 0.641405		                                     \\ \hline
+		Hits@10                                    & 0.884442	                                    \\ \hline
 	\end{tabular}
 	\caption{Metrics of CTP using TransE parameters over FreeBase. }
 	\label{tab:transE_MRR}
@@ -666,12 +686,23 @@ After being able to generate the metrics for the data, we decided to move on to 
 The changes include the KNN type fact selection, just like GNTP, for the CTP model. The new CTP builds an index on the facts and selects the best facts at the terminal node of CTP. This change should increase the efficiency by a lot. Other changes include a lot of streamlining the code and removing the unnecessary files.
 
 \section{Results of updated model}
+\subsection{command}
+The following command is used to run the following experiments:
+\begin{verbatim}
+	nohup python3 ./bin/hoppy-sample-cli.py 
+	--train /home/baadalvm/data/nations/fb15k-273/train.csv
+ 	--test /home/baadalvm/data/nations/fb15k-273/test.tsv 
+	--dev /home/baadalvm/data/nations/fb15k-273/dev.tsv
+	-e 20 -b 100 --seed 1 --eval-batch-size 100 
+	--save nations_params.txt -k 100 --refresh 100 > log.txt 2>&1	
+\end{verbatim}
+
 \subsection{Time and Memory usage}
-\paragraph{Training}
-The run time for training the model reduced drastically after the KNN implementation of extracting best facts. For 20 epochs, the old implementation took about \~2 days to train. While the new model takes about 3 hours to train the same. Memory usage is similar to the old model and well within our computational capabilities.
+\paragraph{Training:}
+The run time for training the model reduced drastically after the KNN implementation of extracting best facts. For 20 epochs, the old implementation took about 2 days to train. While the new model takes about 3 hours to train the same. Memory usage is similar to the old model and well within our computational capabilities.
 
 \paragraph{Evaluation:}
-However, for evaluating the test dataset, the new implementation still takes around 5 days to complete. While it is much better than the time taken for evaluation of the old model, it is still not desirably fast enough. So we decided to use our trained TransE parameters to extract the top k candidate entities to rank over. Since the 'score' function is much faster in the new model, evaluating TransE is much faster and the eva;uation only takes about \~15 minutes to complete.
+However, for evaluating the test dataset, the new implementation still takes around 5 days to complete. While it is much better than the time taken for evaluation of the old model, it is still not desirably fast enough. So we decided to use our trained TransE parameters to extract the top k candidate entities to rank over. Since the 'score' function is much faster in the new model, evaluating TransE is much faster and the evaluation only takes about 15 minutes to complete.
 
 \begin{table}[H]
 	\centering
