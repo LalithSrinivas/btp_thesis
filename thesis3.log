@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  16 MAY 2021 13:27
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  16 MAY 2021 13:35
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -473,7 +473,7 @@ LaTeX Info: Redefining \nameref on input line 36.
 \@outlinefile=\write3
 \openout3 = `thesis3.out'.
 
-<iitd_logo.png, id=176, 2007.5pt x 2007.5pt>
+<iitd_logo.png, id=180, 2007.5pt x 2007.5pt>
 File: iitd_logo.png Graphic file (type png)
 <use iitd_logo.png>
 Package pdftex.def Info: iitd_logo.png  used on input line 51.
@@ -522,7 +522,7 @@ File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 139.
  [5]
-<ntp_example.png, id=280, 908.64468pt x 442.65375pt>
+<ntp_example.png, id=285, 908.64468pt x 442.65375pt>
 File: ntp_example.png Graphic file (type png)
 <use ntp_example.png>
 Package pdftex.def Info: ntp_example.png  used on input line 160.
@@ -577,78 +577,72 @@ Overfull \hbox (0.27098pt too wide) in paragraph at lines 289--289
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 315--317
+Underfull \hbox (badness 10000) in paragraph at lines 316--318
 
  []
 
 [12]
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 318.
+               Default added (so using `tbp') on input line 319.
 
 [13] [14] [15]
-<memory.png, id=388, 1549.79pt x 957.5775pt>
+<memory.png, id=393, 1549.79pt x 957.5775pt>
 File: memory.png Graphic file (type png)
 <use memory.png>
-Package pdftex.def Info: memory.png  used on input line 429.
+Package pdftex.def Info: memory.png  used on input line 430.
 (pdftex.def)             Requested size: 1549.78622pt x 957.57516pt.
- [16 <./memory.png>] [17]
-<time_batch.png, id=417, 1698.345pt x 1055.945pt>
+ [16] [17 <./memory.png>]
+<time_batch.png, id=418, 1698.345pt x 1055.945pt>
 File: time_batch.png Graphic file (type png)
 <use time_batch.png>
-Package pdftex.def Info: time_batch.png  used on input line 500.
+Package pdftex.def Info: time_batch.png  used on input line 501.
 (pdftex.def)             Requested size: 1698.34087pt x 1055.94243pt.
- [18 <./time_batch.png>]
-<time_epoch.png, id=432, 1706.375pt x 1055.945pt>
+ [18]
+<time_epoch.png, id=435, 1706.375pt x 1055.945pt>
 File: time_epoch.png Graphic file (type png)
 <use time_epoch.png>
-Package pdftex.def Info: time_epoch.png  used on input line 511.
+Package pdftex.def Info: time_epoch.png  used on input line 512.
 (pdftex.def)             Requested size: 1706.37085pt x 1055.94243pt.
- [19 <./time_epoch.png>] [20]
+ [19 <./time_batch.png>] [20 <./time_epoch.png>]
 <loss.png, id=457, 1204.5pt x 744.7825pt>
 File: loss.png Graphic file (type png)
 <use loss.png>
-Package pdftex.def Info: loss.png  used on input line 573.
+Package pdftex.def Info: loss.png  used on input line 574.
 (pdftex.def)             Requested size: 1204.49707pt x 744.78069pt.
- [21 <./loss.png>]
+ [21] [22 <./loss.png>]
 Chapter 3.
-[22
+[23
 
-] [23] [24]
+] [24] [25]
 Chapter 4.
-[25
+[26
 
 ]
 No file thesis3.bbl.
-[26]
+[27]
 Chapter 5.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 719.
-[27
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 720.
+[28
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 719.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 720.
  (./thesis3.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 719.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 719.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 720.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 720.
+Package rerunfilecheck Info: File `thesis3.out' has not changed.
+(rerunfilecheck)             Checksum: 538FA20707DCE58155704D10BCFEE3EB;2817.
 
-
-Package rerunfilecheck Warning: File `thesis3.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `thesis3.out':
-(rerunfilecheck)             Before: 23CC919EB169D5BC18890BF38DC0A9EB;2762
-(rerunfilecheck)             After:  538FA20707DCE58155704D10BCFEE3EB;2817.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 719.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 720.
  ) 
 Here is how much of TeX's memory you used:
- 8945 strings out of 492649
- 130967 string characters out of 6129622
- 250668 words of memory out of 5000000
- 12490 multiletter control sequences out of 15000+600000
+ 8947 strings out of 492649
+ 130991 string characters out of 6129622
+ 249670 words of memory out of 5000000
+ 12491 multiletter control sequences out of 15000+600000
  16139 words of font info for 43 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  43i,13n,49p,1215b,477s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -668,10 +662,10 @@ ive/2018/texmf-dist/fonts/type1/public/cm-super/sfbx1728.pfb></usr/local/texliv
 e/2018/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/
 2018/texmf-dist/fonts/type1/public/cm-super/sfti1200.pfb></usr/local/texlive/20
 18/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb>
-Output written on thesis3.pdf (28 pages, 839084 bytes).
+Output written on thesis3.pdf (29 pages, 839497 bytes).
 PDF statistics:
- 616 PDF objects out of 1000 (max. 8388607)
- 548 compressed objects within 6 object streams
- 203 named destinations out of 1000 (max. 500000)
- 405 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 624 PDF objects out of 1000 (max. 8388607)
+ 555 compressed objects within 6 object streams
+ 204 named destinations out of 1000 (max. 500000)
+ 413 words of extra memory for PDF output out of 10000 (max. 10000000)
 
