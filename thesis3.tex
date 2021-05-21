@@ -680,10 +680,11 @@ For lower \(k\), the metrics will always be higher. Because as \(k\) decreases, 
 \chapter{Code changes by author}
 \section{Changes}
 \paragraph{}
-After being able to generate the metrics for the data, we decided to move on to one of the ideas we had previously to reduce the CTP bottleneck. That is, to introduce a KNN like search at the terminal step of CTP, so that it needs to calculate the scores of top k closest facts instead of all the facts in KB. We decided that this step will make the model much more efficient. As we were looking into this, we discovered that the authors made a new commit a month ago in which they made a few changes.
+After being able to generate the metrics for the data, we decided to move on to one of the ideas we had previously to reduce the CTP bottleneck. That is, to introduce a KNN like search at the terminal step of CTP, so that it needs to calculate the scores of top k closest facts instead of all the facts in KB. We decided that this step will make the model much more efficient. As we were looking into this, we discovered that the authors made a new commit a month ago in which they made a few changes. 
 
 \paragraph{}
-The changes include the KNN type fact selection, just like GNTP, for the CTP model. The new CTP builds an index on the facts and selects the best facts at the terminal node of CTP. This change should increase the efficiency by a lot. Other changes include a lot of streamlining the code and removing the unnecessary files.
+The changes include the KNN type fact selection, just like GNTP, for the CTP model. The new CTP builds an index on the facts and selects the best facts at the terminal node of CTP. There is also a new evaluation function in which similar indexes are used to get k best entities to rank over.
+ This change should increase the efficiency by a lot. Other changes include a lot of streamlining the code and removing the unnecessary files.
 
 \section{Results of updated model}
 \subsection{command}
@@ -702,25 +703,87 @@ The following command is used to run the following experiments:
 The run time for training the model reduced drastically after the KNN implementation of extracting best facts. For 20 epochs, the old implementation took about 2 days to train. While the new model takes about 3 hours to train the same. Memory usage is similar to the old model and well within our computational capabilities.
 
 \paragraph{Evaluation:}
-However, for evaluating the test dataset, the new implementation still takes around 5 days to complete. While it is much better than the time taken for evaluation of the old model, it is still not desirably fast enough. So we decided to use our trained TransE parameters to extract the top k candidate entities to rank over. Since the 'score' function is much faster in the new model, evaluating TransE is much faster and the evaluation only takes about 15 minutes to complete.
+However, for evaluating the test dataset, the new implementation still takes around 5 days to complete, which we ran once for comparision. While it is much better than the time taken for evaluation of the old model, it is still not desirably fast enough. So we decided to use our trained TransE parameters to extract the top k candidate entities to rank over. Since the 'score' function is much faster in the new model, evaluating TransE is much faster and the evaluation only takes about 15 minutes to complete.
 
 \begin{table}[H]
 	\centering
-	\begin{tabular}{|r|r|r|}
+	\begin{tabular}{|r|r|r|r|r|r|}
 		\hline
-		\multicolumn{1}{|l|}{\textbf{Type}} & \multicolumn{1}{l|}{\textbf{k=10}} & \multicolumn{1}{l|}{\textbf{k=100}} \\ \hline
-		MRR                                    & 0.563997      	&0                                \\ \hline
-		Hits@1                                    & 0.460471		&0                                   \\ \hline
-		Hits@3                                    & 0.565230		&0                                    \\ \hline
-		Hits@5                                    & 0.641405		&0                                     \\ \hline
-		Hits@10                                    & 0.884442	&0                                    \\ \hline
+		\multicolumn{1}{|l|}{\textbf{Type}} & \multicolumn{1}{l|}{\textbf{ctp eval}} & \multicolumn{1}{l|}{\textbf{k=10}} & \multicolumn{1}{l|}{\textbf{k=25}} & \multicolumn{1}{l|}{\textbf{k=50}} & \multicolumn{1}{l|}{\textbf{k=100}} \\ \hline
+		MRR		& 0.068452                                    & 0.592663    & 0.532390      	&0.495425  & 0.458804                              \\ \hline
+		Hits@1	& 0.044654                                    & 0.487311	& 0.453236		&0.428400  & 0.401027                                   \\ \hline
+		Hits@3	& 0.072769                                    & 0.604790	& 0.541745		&0.506587  & 0.467636                                   \\ \hline
+		Hits@5	& 0.088081                                    & 0.679840	& 0.590362		&0.545994  & 0.500599                                    \\ \hline
+		Hits@10	& 0.110294                                    & 0.931280	& 0.673396	&0.613630  & 0.556886                                  \\ \hline
 	\end{tabular}
-	\caption{Metrics of updated CTP using TransE parameters over FreeBase. }
+	\caption{Metrics of updated CTP using TransE parameters over FreeBase dev set. }
 	\label{tab:transE_MRR}
 \end{table}
 
-\section{Analysis}
 
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|r|r|r|r|r|}
+		\hline
+		\multicolumn{1}{|l|}{\textbf{Type}} & \multicolumn{1}{l|}{\textbf{k=10}} & \multicolumn{1}{l|}{\textbf{k=25}} & \multicolumn{1}{l|}{\textbf{k=50}} & \multicolumn{1}{l|}{\textbf{k=100}} \\ \hline
+		MRR                                    & 0.590076	& 0.528809      	&0.502258  & 0.449609                              \\ \hline
+		Hits@1                                    & 0.483460	& 0.447718		&0.436822  & 0.391625                                   \\ \hline
+		Hits@3                                    & 0.602365	& 0.542290		&0.511189  & 0.458028                                   \\ \hline
+		Hits@5                                    & 0.679859	& 0.587462		&0.551549  & 0.490301                                    \\ \hline
+		Hits@10                                    & 0.924216	& 0.673556	&0.614629  & 0.545832                                  \\ \hline
+	\end{tabular}
+	\caption{Metrics of updated CTP using TransE parameters over FreeBase test set. }
+	\label{tab:transE_MRR}
+\end{table}
+
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|r|r|}
+		\hline
+		\multicolumn{1}{|l|}{\textbf{k}} & \multicolumn{1}{l|}{\textbf{time taken per batch(sec)}}  \\ \hline
+		10	&	5.5                              \\ \hline
+		25	&	8.52                              \\ \hline
+		50	&	12.58                              \\ \hline
+		100	&	20.5                              \\ \hline
+	\end{tabular}
+	\caption{Time taken to evaluate a batch. }
+	\label{tab:transE_MRR}
+\end{table}
+
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|r|r|}
+		\hline
+		\multicolumn{1}{|l|}{\textbf{k}} & \multicolumn{1}{l|}{\textbf{memory usage (GB)}}  \\ \hline
+		10	&	2.8                              \\ \hline
+		25	&	2.9                              \\ \hline
+		50	&	3.1                              \\ \hline
+		100	&	3.4                              \\ \hline
+	\end{tabular}
+	\caption{Time taken to evaluate a batch. }
+	\label{tab:transE_MRR}
+\end{table}
+
+
+\section{Analysis}
+\paragraph{}
+We can see that the results of the evaluation using TransE are as expected. As k increases, all the metrics (MRR and hits) are decreased, since more entities are being considered for ranking, the rank our desired entity can remain same as before or get worse. The time taken and memory usage increases with increase in k as expected. 
+
+\paragraph{CTP evaluation vs TransE evaluation:}
+Despite the large runtime of CTP evaluation, we ran it to see how the results compare to our implementation. As we can see, the CTP evaluation produces results that are really bad compared to ours. Part of the reason can be the heuristic used to select the entity candidates. Their heuristic is to build an index on the facts using \((s, p)\) as the key and \(o\) as the values and vice versa, while TransE trains its parameters so that the missing entity can be estimated. Their heuristic isn't designed to give the entities that are not in the training facts and the similarity in the third entity is not being considered. Thus TransE might be a better heuristic in selecting entities for ranking.
+
+\paragraph{}
+It is also to be noted that we say that TransE evaluation is a better heuristic in terms of the results we obtained. But our original goal is to approximate/replicate the results of CTP, i.e, when all entities are being ranked for all triples, which is computationally infeasible. So, in approximating just how CTP performs, for the same k, whichever has the lowest metrics, is the better heuristic. This is because, ultimately, the CTP model gives the scores of the selected entities and if the rank of an entity as per one heuristic is lower than that of the other heuristic, that means the heuristic is not selecting other entities that might have a better CTP score. So in that way their heuristic is the better one in estimating the CTP performance.
+
+\paragraph{}
+Our implementation can be looked at as a new model rather than approximating performance of CTP. It can be looked at as combination of CTP and TransE, where we train both the models and when evaluating we extract the best entities using TransE entities and then rank them using CTP scores. The metrics we obtain are really good and close to standard link prediction models on freebase dataset.
+
+
+
+
+\chapter{Code study}
 
 
 
@@ -744,6 +807,7 @@ However, for evaluating the test dataset, the new implementation still takes aro
 \item Minervini, Pasquale, et al. "Differentiable Reasoning on Large Knowledge Bases and Natural Language." (2020): 125-142.
 \item Trouillon, Théo, et al. "Complex embeddings for simple link prediction." International Conference on Machine Learning (ICML), 2016.
 \item Bordes, Antoine, et al. "Translating embeddings for modeling multi-relational data." Advances in neural information processing systems 26 (2013): 2787-2795.
+\item Bordes, Antoine and Usunier, Nicolas and Garcia-Duran, Alberto and Weston, Jason and Yakhnenko, Oksana, et al. "Translating embeddings for modeling multi-relational data"
 \item Source code of CTP: \url{https://github.com/uclnlp/ctp}
 \item Source code of GNTP: \url{https://github.com/uclnlp/gntp}
 \end{enumerate}

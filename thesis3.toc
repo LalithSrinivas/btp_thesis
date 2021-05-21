@@ -117,5 +117,10 @@
 \contentsline {subsection}{\numberline {4.2.2}Time and Memory usage}{xxviii}{subsection.4.2.2}
 \contentsline {paragraph}{Training:}{xxviii}{section*.80}
 \contentsline {paragraph}{Evaluation:}{xxix}{section*.81}
-\contentsline {section}{\numberline {4.3}Analysis}{xxix}{section.4.3}
-\contentsline {chapter}{\numberline {5}References}{xxx}{chapter.5}
+\contentsline {section}{\numberline {4.3}Analysis}{xxx}{section.4.3}
+\contentsline {paragraph}{}{xxx}{section*.82}
+\contentsline {paragraph}{CTP evaluation vs TransE evaluation:}{xxx}{section*.83}
+\contentsline {paragraph}{}{xxx}{section*.84}
+\contentsline {paragraph}{}{xxx}{section*.85}
+\contentsline {chapter}{\numberline {5}Code study}{xxxii}{chapter.5}
+\contentsline {chapter}{\numberline {6}References}{xxxiii}{chapter.6}
