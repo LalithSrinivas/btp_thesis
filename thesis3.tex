@@ -954,7 +954,29 @@ for i in range(batch_size):
 \end{lstlisting}}
 \end{enumerate}
 
+\subsection{CTP/SimpleHoppy model}
+The main components of this class are:
+\begin{enumerate}
+\item Entity embeddings
+\item Predicate embeddings
+\item NeuralKB model
+\item Reformulators (hops\_lst in code)
+\end{enumerate}
 
+\paragraph{Reformulators:} 
+Reformulators are the select module that learns to generate rules from the data that we discussed in the theory section. We use multiple select modules for practical purposes, like generating rules with different templates.
+\[ select_{\theta}(G) = [ F_H(G) :- F_{B_1}(G), F_{B_2}(G)] \]
+
+where
+\begin{enumerate}
+	\item \( F_H(G) = [ f_H(\theta_G), X, Y] \)
+	\item \( F_{B_1} = [ f_{B_1}(\theta_G), X, Z] \)
+	\item \( F_{B_2} = [ f_{B_2}(\theta_G, Z, Y] \)
+\end{enumerate}
+
+
+\paragraph{Methods:} 
+This class also has functions score, forward (all variations) like NeuralKB. These methods take the goal triples and expand them on reformulators/select module to generate rules and thus generating new atoms. At the terminal step, SimpleHoppy model simply calls the respective score or forward functions of NeuralKB model of the final ground atoms. So the structure of all these functions are very similar and the method called on the NeuralKB model is about the only thing that differs.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

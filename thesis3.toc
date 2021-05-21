@@ -131,4 +131,7 @@
 \contentsline {subsubsection}{Methods}{xxxiv}{section*.87}
 \contentsline {paragraph}{score:}{xxxiv}{section*.88}
 \contentsline {paragraph}{forward:}{xxxiv}{section*.89}
+\contentsline {subsection}{\numberline {5.1.4}CTP/SimpleHoppy model}{xxxv}{subsection.5.1.4}
+\contentsline {paragraph}{Reformulators:}{xxxv}{section*.90}
+\contentsline {paragraph}{Methods:}{xxxv}{section*.91}
 \contentsline {chapter}{\numberline {6}References}{xxxvi}{chapter.6}
