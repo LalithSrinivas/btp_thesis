@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  21 MAY 2021 19:58
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  21 MAY 2021 21:12
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -702,27 +702,27 @@ Overfull \hbox (20.09511pt too wide) in paragraph at lines 866--867
 
 [33]
 No file thesis3.bbl.
-[34]
+[34] [35]
 Chapter 6.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 962.
-[35
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 968.
+[36
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 962.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 968.
  (./thesis3.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 962.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 962.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 968.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 968.
 Package rerunfilecheck Info: File `thesis3.out' has not changed.
 (rerunfilecheck)             Checksum: D63E1A3CC8D6B1A19399F219B69A6F44;3238.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 962.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 968.
  ) 
 Here is how much of TeX's memory you used:
- 10652 strings out of 492649
- 153369 string characters out of 6129622
+ 10656 strings out of 492649
+ 153400 string characters out of 6129622
  276196 words of memory out of 5000000
  14061 multiletter control sequences out of 15000+600000
  16139 words of font info for 43 fonts, out of 8000000 for 9000
@@ -745,10 +745,10 @@ e/2018/texmf-dist/fonts/type1/public/cm-super/sfbx1728.pfb></usr/local/texlive/
 2018/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/20
 18/texmf-dist/fonts/type1/public/cm-super/sfti1200.pfb></usr/local/texlive/2018
 /texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb>
-Output written on thesis3.pdf (36 pages, 869964 bytes).
+Output written on thesis3.pdf (37 pages, 870873 bytes).
 PDF statistics:
- 830 PDF objects out of 1000 (max. 8388607)
- 751 compressed objects within 8 object streams
- 327 named destinations out of 1000 (max. 500000)
+ 841 PDF objects out of 1000 (max. 8388607)
+ 761 compressed objects within 8 object streams
+ 331 named destinations out of 1000 (max. 500000)
  469 words of extra memory for PDF output out of 10000 (max. 10000000)
 

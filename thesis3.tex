@@ -930,7 +930,13 @@ return res
 \end{lstlisting}
 
 \paragraph{forward:}
-The forward function is used for evaluating a triple, i.e
+The forward function is used for evaluating a triple, i.e, for every triple \((s, p, o)\), rank \(s\) w.r.t. \((p, o)\) and rank \(p\) w.r.t. \((s, p)\). There are multiple implementations of forward function.
+
+\begin{enumerate}
+\item forward: finding k best entities using index\_sp and index\_po for the batch of triples as a whole. That is, we get k entities to rank over for the whole batch of triples.
+\item forward\_: Brute force implementation, ranks over all the entities in Knowledge Base.
+\item forward\_\_: (Author's preferred method) finding k best entity for each of the triple instead of for the whole batch.
+\end{enumerate}
 
 
 
