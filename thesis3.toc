@@ -124,14 +124,15 @@
 \contentsline {paragraph}{}{xxx}{section*.85}
 \contentsline {paragraph}{}{xxxi}{section*.86}
 \contentsline {chapter}{\numberline {5}Code study}{xxxii}{chapter.5}
-\contentsline {section}{\numberline {5.1}List of Files Discussed}{xxxii}{section.5.1}
+\contentsline {section}{\numberline {5.1}Files Discussed}{xxxii}{section.5.1}
 \contentsline {subsection}{\numberline {5.1.1}Main Script}{xxxii}{subsection.5.1.1}
 \contentsline {subsection}{\numberline {5.1.2}Data Class}{xxxiii}{subsection.5.1.2}
-\contentsline {subsection}{\numberline {5.1.3}NeuralKB}{xxxiii}{subsection.5.1.3}
+\contentsline {subsection}{\numberline {5.1.3}NeuralKB}{xxxiv}{subsection.5.1.3}
 \contentsline {subsubsection}{Methods}{xxxiv}{section*.87}
 \contentsline {paragraph}{score:}{xxxiv}{section*.88}
 \contentsline {paragraph}{forward:}{xxxiv}{section*.89}
 \contentsline {subsection}{\numberline {5.1.4}CTP/SimpleHoppy model}{xxxv}{subsection.5.1.4}
 \contentsline {paragraph}{Reformulators:}{xxxv}{section*.90}
-\contentsline {paragraph}{Methods:}{xxxv}{section*.91}
-\contentsline {chapter}{\numberline {6}References}{xxxvi}{chapter.6}
+\contentsline {paragraph}{Methods:}{xxxvi}{section*.91}
+\contentsline {subsection}{\numberline {5.1.5}Evaluation script}{xxxvi}{subsection.5.1.5}
+\contentsline {chapter}{\numberline {6}References}{xxxviii}{chapter.6}

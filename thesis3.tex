@@ -809,12 +809,13 @@ Our implementation can be looked at as a new model rather than approximating per
 
 
 \chapter{Code study}
-\section{List of Files Discussed}
+\section{Files Discussed}
 \begin{enumerate}
 \item Main script: bin/hoppy-cli.py
 \item Data class: ctp/training/data.py
 \item Knowledge Base class: ctp/smart/kb.py
 \item CTP model: ctp/smart/simple.py
+\item evaluation script: ctp/evaluation/slow.py
 \end{enumerate}
 
 \subsection{Main Script}
@@ -977,6 +978,48 @@ where
 
 \paragraph{Methods:} 
 This class also has functions score, forward (all variations) like NeuralKB. These methods take the goal triples and expand them on reformulators/select module to generate rules and thus generating new atoms. At the terminal step, SimpleHoppy model simply calls the respective score or forward functions of NeuralKB model of the final ground atoms. So the structure of all these functions are very similar and the method called on the NeuralKB model is about the only thing that differs.
+
+\subsection{Evaluation script}
+Forward method of the CTP model is called on batch wise data, and we will get the scores of all the entities w.r.t. subject, predicate pair and vice versa for predicate, object pair. These scores are processed to remove the entities that we already have in our database. We simply make the scores of those entities to be negative infinity. We then find the scores of our subject and our predicate and proceed to find MRR and hit values.
+
+\begin{lstlisting}
+if model.model.facts[0].shape[0] < 90000:
+                res_sp, res_po = model.forward_(tensor_xp_emb, 
+                		tensor_xs_emb, tensor_xo_emb)
+            else:
+                res_sp, res_po = model.forward__(tensor_xp_emb, 
+                		tensor_xs_emb, tensor_xo_emb)
+
+            _scores_sp, _ = res_sp
+            _scores_po, _ = res_po
+
+            scores_sp, scores_po = _scores_sp.cpu().numpy(), 
+            		_scores_po.cpu().numpy()
+		
+...
+
+for elem_idx in range(batch_size):
+	for tmp_o_idx in o_to_remove:
+                if tmp_o_idx != o_idx:
+                    scores_sp[elem_idx, tmp_o_idx] = - np.infty
+
+	for tmp_s_idx in s_to_remove:
+		if tmp_s_idx != s_idx:
+                    scores_po[elem_idx, tmp_s_idx] = - np.infty
+
+	rank_l = 1 + np.argsort(np.argsort(
+			- scores_po[elem_idx, :]))[s_idx]
+	rank_r = 1 + np.argsort(np.argsort(
+            		- scores_sp[elem_idx, :]))[o_idx]             
+	mrr += 1.0 / rank_l
+	mrr += 1.0 / rank_r
+
+	for n in hits_at:
+		hits_at_n(n, rank_l)
+
+	for n in hits_at:
+		hits_at_n(n, rank_r)
+\end{lstlisting}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
