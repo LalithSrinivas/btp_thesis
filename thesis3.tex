@@ -934,8 +934,24 @@ The forward function is used for evaluating a triple, i.e, for every triple \((s
 
 \begin{enumerate}
 \item forward: finding k best entities using index\_sp and index\_po for the batch of triples as a whole. That is, we get k entities to rank over for the whole batch of triples.
+\item {\begin{lstlisting}
+# for all the triples in the batch at a time.
+neigh_sp, neigh_po, _ = self.neighbors(rel, arg1, arg2, 
+	f_rel_emb, f_arg1_emb, f_arg2_emb)
+
+\end{lstlisting}}
 \item forward\_: Brute force implementation, ranks over all the entities in Knowledge Base.
 \item forward\_\_: (Author's preferred method) finding k best entity for each of the triple instead of for the whole batch.
+\item {\begin{lstlisting}
+# for each the triple in the batch at a time.
+for i in range(batch_size):
+	if arg1 is not None:
+		...
+		_, _, neigh_spo = self.neighbors(i_emb_rel, 
+		i_emb_arg1, emb, f_rel_emb, f_arg1_emb, 
+		f_arg2_emb, is_spo=True)
+                neigh_spo_tensor = self.to_tnsr(neigh_spo)
+\end{lstlisting}}
 \end{enumerate}
 
 
