@@ -783,7 +783,48 @@ Our implementation can be looked at as a new model rather than approximating per
 
 
 
+
+\paragraph{}
+Our implementation can be looked at as a new model rather than approximating performance of CTP. It can be looked at as combination of CTP and TransE, where we train both the models and when evaluating we extract the best entities using TransE entities and then rank them using CTP scores. The metrics we obtain are really good and close to standard link prediction models on freebase dataset. But for smaller values of k, any two link prediction models combined can produce really good results as the worst case rank is drastically reduced and the scoring model takes advantage from the selecting model. Below is the result obtained on freebase dataset, by training a ComplEx model and a TransE model. We used TransE for KNN selection of entities and ComplEx for scoring.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|r|r|}
+		\hline
+		\multicolumn{1}{|l|}{\textbf{Type}} & \multicolumn{1}{l|}{\textbf{dev set}}  \\ \hline
+		MRR		&	0.687651                              \\ \hline
+		Hits@1	&	0.593790                              \\ \hline
+		Hits@3	&	0.708272                              \\ \hline
+		Hits@5	&	0.789553                              \\ \hline
+		Hits@10	&	0.967385                              \\ \hline
+	\end{tabular}
+	\caption{ComplEx evaluation with TransE selection with k=10 on Freebase dev set. }
+	\label{tab:transE_MRR}
+\end{table}
+
+
+
+
+
+
 \chapter{Code study}
+\section{List of Files Discussed}
+\begin{enumerate}
+\item Main script: bin/hoppy-cli.py
+\item Data class: ctp/training/data.py
+\item Knowledge Base class: ctp/smart/kb.py
+\item CTP model: ctp/smart/simple.py
+\end{enumerate}
+
+\subsection{Main Script}
+The script does the following:
+
+\begin{enumerate}
+\item Loads the training, dev, test data into a Data class object.
+\item Creates a NeuralKB model with the Data object as an input.
+\item Initializes the CTP model (called the hoppy/SimpleHoppy model in the code) with NeuralKB object as an input.
+\item Proceeds to train the model and then evaluate it on test and dev datasets.
+\end{enumerate}
 
 
 
