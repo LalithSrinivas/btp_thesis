@@ -21,6 +21,7 @@
 \usepackage{float}
 \usepackage{amssymb}
 \usepackage{amsfonts}
+\usepackage{listings}
 \restylefloat{table}
  \linespread{1.2}
 
@@ -821,10 +822,115 @@ The script does the following:
 
 \begin{enumerate}
 \item Loads the training, dev, test data into a Data class object.
+\item {\begin{lstlisting}
+data = Data(train_path=train_path, dev_path=dev_path,
+ test_path=test_path, test_i_path=test_i_path, 
+ test_ii_path=test_ii_path, input_type=input_type)
+	\end{lstlisting}}
 \item Creates a NeuralKB model with the Data object as an input.
+\item {\begin{lstlisting}
+base_model = NeuralKB(entity_embeddings=entity_embeddings, 
+predicate_embeddings=predicate_embeddings, k=k_max, 
+facts=facts, kernel=kernel, device=device, index_type=index_type, 
+refresh_interval=refresh_interval).to(device)	\end{lstlisting}}
+\item Initializes the goal reformulators (select module) based on number of hops given.
+\item {\begin{lstlisting}
+def make_hop(s: str) -> Tuple[BaseReformulator, bool]:
+        nonlocal memory
+        if s.isdigit():
+            nb_hops, is_reversed = int(s), False
+        else:
+            nb_hops, is_reversed = int(s[:-1]), True
+        res = None
+        if reformulator_type in {'static'}:
+            res = StaticReformulator(nb_hops, embedding_size, 
+            	init_name=ref_init_type, lower_bound=lower_bound, 
+		upper_bound=upper_bound)
+        elif reformulator_type in {'linear'}:
+            res = LinearReformulator(nb_hops, embedding_size, 
+            	init_name=ref_init_type, lower_bound=lower_bound, 
+		upper_bound=upper_bound)
+        elif reformulator_type in {'attentive'}:
+            res = AttentiveReformulator(nb_hops, predicate_embeddings,
+            	init_name=ref_init_type, lower_bound=lower_bound, 
+		upper_bound=upper_bound)
+        elif reformulator_type in {'memory'}:
+            if nb_hops not in memory:
+                memory[nb_hops] = MemoryReformulator.Memory(nb_hops, 
+                		nb_rules, embedding_size, init_name=ref_init_type)
+
+            res = MemoryReformulator(memory[nb_hops])
+        elif reformulator_type in {'ntp'}:
+            res = NTPReformulator(nb_hops=nb_hops, 
+            	embedding_size=embedding_size, kernel=kernel, 
+		init_name=ref_init_type, lower_bound=lower_bound, 
+		upper_bound=upper_bound)
+        assert res is not None
+        return res, is_reversed
+        \end{lstlisting}}
+
 \item Initializes the CTP model (called the hoppy/SimpleHoppy model in the code) with NeuralKB object as an input.
+\item {\begin{lstlisting}
+model = SimpleHoppy(model=base_model, entity_embeddings=
+	entity_embeddings, hops_lst=hops_lst).to(device)
+\end{lstlisting}}
 \item Proceeds to train the model and then evaluate it on test and dev datasets.
 \end{enumerate}
+
+
+\subsection{Data Class}
+Loads the triples from all the files mentioned.
+\begin{lstlisting}
+def read_triples(path: str) -> List[Tuple[str, str, str]]:
+    triples = []
+    with open(path, 'rt') as f:
+        for line in f.readlines():
+            s, p, o = line.split()
+            triples += [(s.strip(), p.strip(), o.strip())]
+    return triples
+   \end{lstlisting}
+
+
+\subsection{NeuralKB}
+The main components of this class are:
+\begin{enumerate}
+\item Entity embeddings
+\item Predicate embeddings
+\item Facts
+\item Indices for \((s, p, o), (s, p), (p, o)\) search.
+\item {\begin{lstlisting}
+index_factory = {
+            'faiss': lambda: FAISSSearchIndex(),
+            'np': lambda: NPSearchIndex(),
+            'nms': lambda: NMSSearchIndex()
+        }
+
+assert self.index_type in index_factory
+
+self.index_sp = index_factory[self.index_type]()
+self.index_po = index_factory[self.index_type]()
+self.index_spo = index_factory[self.index_type]()
+\end{lstlisting}}
+\end{enumerate}
+
+\subsubsection{Methods}
+\paragraph{score:}
+The score function takes a triple (a batch of them) as an input and selects the closest facts in our Knowledge Base using index\_spo and then calculates the similarity between the goal triple and the facts selected. The scores are max pooled and then returned.
+
+\begin{lstlisting}
+_, _, neigh_spo = self.neighbors(rel, arg1, arg2, f_rel_emb, 
+	f_arg1_emb, f_arg2_emb, is_spo=True)
+
+neigh_spo_tensor = self.to_tnsr(neigh_spo)
+...
+scores = self.kernel(b_emb_2d, f_emb_2d).view(batch_size, -1)
+
+res, _ = torch.max(scores, dim=1)
+return res
+\end{lstlisting}
+
+\paragraph{forward:}
+The forward function is used for evaluating a triple, i.e
 
 
 
