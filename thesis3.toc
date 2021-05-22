@@ -135,4 +135,5 @@
 \contentsline {paragraph}{Reformulators:}{xxxv}{section*.90}
 \contentsline {paragraph}{Methods:}{xxxvi}{section*.91}
 \contentsline {subsection}{\numberline {5.1.5}Evaluation script}{xxxvi}{subsection.5.1.5}
+\contentsline {subsection}{\numberline {5.1.6}Evaluation with TransE}{xxxvii}{subsection.5.1.6}
 \contentsline {chapter}{\numberline {6}References}{xxxviii}{chapter.6}

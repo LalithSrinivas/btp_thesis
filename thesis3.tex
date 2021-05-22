@@ -816,6 +816,7 @@ Our implementation can be looked at as a new model rather than approximating per
 \item Knowledge Base class: ctp/smart/kb.py
 \item CTP model: ctp/smart/simple.py
 \item evaluation script: ctp/evaluation/slow.py
+\item evaluation with TransE: ctp/evaluation/transe.py
 \end{enumerate}
 
 \subsection{Main Script}
@@ -1019,6 +1020,22 @@ for elem_idx in range(batch_size):
 
 	for n in hits_at:
 		hits_at_n(n, rank_r)
+\end{lstlisting}
+
+\subsection{Evaluation with TransE}
+Since the model's evaluation script is very slow, we used TransE to try to approximate the evaluation metrics. We load the TransE parameters in the main script before starting the evaluation and pass it as an input to the evaluate function. Now in the evaluate function, for each triple \((s, p, o)\), using TransE embeddings, we estimate \(o_{est}\) and then do a KNN search on TransE embeddings to select best \(k\) entities as candidate objects. We then calculate the scores for all these entities and find the rank of the object \(o\) and vice versa for subject \(s\). 
+
+\begin{lstlisting}
+# index used to do KNN search on TransE embeddings
+transe_index = NMSSearchIndex()
+transe_index.build(transe_entity_embeddings.cpu().detach().numpy())
+...
+#getting the k best entities
+sp_emb = [o] + transe_index.query(diff_sp, 
+	k=num_entities_select)[0].tolist()
+po_emb = [s] + transe_index.query(diff_po, 
+	k=num_entities_select)[0].tolist()
+...
 \end{lstlisting}
 
 
